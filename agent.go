@@ -1,13 +1,13 @@
 package task
 
 // Agent 任务执行器
-type Agent[T any] interface {
+type Agent interface {
 	// Start 开始接收任务
-	Start(processor Processor[T]) error
+	Start(processor Processor) error
 
 	// Add 添加
-	Add(scheduling T) error
+	Add(scheduling Scheduling) error
 
 	// Remove 删除
-	Remove(scheduling T) error
+	Remove(scheduling Scheduling) error
 }
