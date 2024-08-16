@@ -1,27 +1,20 @@
 package core
 
 import (
-	"github.com/goexl/task/internal/param"
+	"github.com/goexl/task/internal/builder"
 )
 
-type Scheduling struct {
-	params *param.Scheduling
+type Scheduling interface {
+	// Id 任务标识，如果不提供将自动生成
+	Id() uint64
+
+	// Target 目标
+	Target() uint64
+
+	// Data 数据
+	Data() any
 }
 
-func NewScheduling(params *param.Scheduling) *Scheduling {
-	return &Scheduling{
-		params: params,
-	}
-}
-
-func (s *Scheduling) Id() uint64 {
-	return s.params.Id
-}
-
-func (s *Scheduling) Target() uint64 {
-	return s.params.Target
-}
-
-func (s *Scheduling) Data() any {
-	return s.params.Data
+func NewScheduling(target uint64) *builder.Scheduling {
+	return builder.NewScheduling(target)
 }

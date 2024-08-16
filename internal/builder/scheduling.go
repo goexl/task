@@ -1,7 +1,7 @@
 package builder
 
 import (
-	"github.com/goexl/task/internal/core"
+	"github.com/goexl/task/internal/internal"
 	"github.com/goexl/task/internal/param"
 )
 
@@ -29,6 +29,6 @@ func (s *Scheduling) Data(data any) (scheduling *Scheduling) {
 	return
 }
 
-func (s *Scheduling) Build() *core.Scheduling {
-	return core.NewScheduling(s.params)
+func (s *Scheduling) Build() *internal.Scheduling {
+	return internal.NewScheduling(s.params)
 }
