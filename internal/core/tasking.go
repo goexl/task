@@ -4,5 +4,5 @@ type Tasking interface {
 	Scheduling
 
 	// Times 重试次数
-	Times() int
+	Times() uint32
 }
