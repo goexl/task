@@ -7,5 +7,5 @@ import (
 // Processor 处理器
 type Processor interface {
 	// Process 处理任务调度
-	Process(core.Tasking) (core.Executor, error)
+	Process(core.Tasking) (Executor, error)
 }
