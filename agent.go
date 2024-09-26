@@ -14,4 +14,7 @@ type Agent interface {
 
 	// Remove 删除
 	Remove(scheduling core.Scheduling) error
+
+	// Stop 停止
+	Stop() error
 }
