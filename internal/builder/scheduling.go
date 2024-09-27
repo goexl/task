@@ -2,7 +2,7 @@ package builder
 
 import (
 	"github.com/goexl/task/internal/internal"
-	"github.com/goexl/task/internal/param"
+	"github.com/goexl/task/internal/internal/param"
 )
 
 type Scheduling struct {
