@@ -8,6 +8,6 @@ import (
 // Scheduling 计划
 type Scheduling = core.Scheduling
 
-func NewScheduling(target uint64) *builder.Scheduling {
-	return builder.NewScheduling(target)
+func NewScheduling(target uint64, typ core.Type) *builder.Scheduling {
+	return builder.NewScheduling(target, typ)
 }

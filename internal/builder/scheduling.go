@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"github.com/goexl/task/internal/core"
 	"github.com/goexl/task/internal/internal"
 	"github.com/goexl/task/internal/internal/param"
 )
@@ -9,9 +10,9 @@ type Scheduling struct {
 	params *param.Scheduling
 }
 
-func NewScheduling(target uint64) *Scheduling {
+func NewScheduling(target uint64, typ core.Type) *Scheduling {
 	return &Scheduling{
-		params: param.NewScheduling(target),
+		params: param.NewScheduling(target, typ),
 	}
 }
 
