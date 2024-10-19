@@ -1,6 +1,8 @@
 package builder
 
 import (
+	"time"
+
 	"github.com/goexl/task/internal/core"
 	"github.com/goexl/task/internal/internal"
 	"github.com/goexl/task/internal/internal/param"
@@ -17,6 +19,13 @@ func NewScheduling(target uint64, typ core.Type) *Scheduling {
 }
 
 func (s *Scheduling) Id(id uint64) (scheduling *Scheduling) {
+	s.params.Id = id
+	scheduling = s
+
+	return
+}
+
+func (s *Scheduling) Fixed(time time.Time) (scheduling *Scheduling) {
 	s.params.Id = id
 	scheduling = s
 

@@ -5,10 +5,11 @@ import (
 )
 
 type Scheduling struct {
-	Id     uint64
-	Target uint64
-	Type   core.Type
-	Data   any
+	Id      uint64
+	Target  uint64
+	Type    core.Type
+	Subtype core.Type
+	Data    any
 }
 
 func NewScheduling(target uint64, typ core.Type) *Scheduling {
