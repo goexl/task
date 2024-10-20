@@ -12,7 +12,7 @@ type Scheduling struct {
 	params *param.Scheduling
 }
 
-func NewScheduling(target uint64, typ core.Type) *Scheduling {
+func NewScheduling(target uint64, typ core.Subtype) *Scheduling {
 	return &Scheduling{
 		params: param.NewScheduling(target, typ),
 	}

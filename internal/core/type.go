@@ -1,3 +1,3 @@
 package core
 
-type Type uint16
+type Type uint8
