@@ -7,14 +7,15 @@ import (
 type Scheduling struct {
 	Id      uint64
 	Target  uint64
-	Type    core.Subtype
-	Subtype core.Subtype
-	Data    any
+	Type    core.Type
+	Subtype core.Type
+	Data    map[string]any
 }
 
-func NewScheduling(target uint64, typ core.Subtype) *Scheduling {
+func NewScheduling(target uint64, subtype core.Type) *Scheduling {
 	return &Scheduling{
-		Target: target,
-		Type:   typ,
+		Target:  target,
+		Subtype: subtype,
+		Data:    make(map[string]any),
 	}
 }

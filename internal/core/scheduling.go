@@ -7,8 +7,11 @@ type Scheduling interface {
 	// Target 目标
 	Target() uint64
 
-	// Subtype 类型
-	Type() Subtype
+	// Type 类型
+	Type() Type
+
+	// Subtype 子类型
+	Subtype() Type
 
 	// Data 数据
 	Data() any
