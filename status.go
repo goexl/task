@@ -6,17 +6,17 @@ import (
 
 const (
 	// StatusCreated 已创建
-	StatusCreated = 1
+	StatusCreated = kernel.StatusCreated
 	// StatusRunning 执行中
-	StatusRunning = 2
+	StatusRunning = kernel.StatusRunning
 	// StatusRetrying 重试中
-	StatusRetrying = 3
+	StatusRetrying = kernel.StatusRetrying
 
 	// StatusFailed 失败
-	StatusFailed = 10
+	StatusFailed = kernel.StatusFailed
 
 	// StatusSuccess 成功
-	StatusSuccess = 20
+	StatusSuccess = kernel.StatusSuccess
 )
 
 // Status 类型
