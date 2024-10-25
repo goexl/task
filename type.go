@@ -1,7 +1,8 @@
 package task
 
 import (
-	"github.com/goexl/task/internal/core"
+	"github.com/goexl/task/internal/kernel"
 )
 
-type Type = core.Type
+// Type 类型
+type Type = kernel.Type

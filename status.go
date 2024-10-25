@@ -1,5 +1,9 @@
 package task
 
+import (
+	"github.com/goexl/task/internal/kernel"
+)
+
 const (
 	// StatusCreated 已创建
 	StatusCreated = 1
@@ -16,4 +20,4 @@ const (
 )
 
 // Status 类型
-type Status uint8
+type Status = kernel.Status
