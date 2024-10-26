@@ -2,7 +2,7 @@ package param
 
 import (
 	"github.com/goexl/log"
-	"github.com/goexl/task/internal/kernel"
+	"github.com/goexl/task/internal/internal/kernel"
 )
 
 type Agent struct {

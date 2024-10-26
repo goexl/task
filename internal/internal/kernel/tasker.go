@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/goexl/task/internal/internal/core"
+	kernel2 "github.com/goexl/task/internal/kernel"
 )
 
 type Tasker interface {
@@ -14,10 +15,10 @@ type Tasker interface {
 	Remove(scheduling core.Scheduling) error
 
 	// Running 运行中
-	Running(id uint64, status Status, retries uint32) error
+	Running(id uint64, status kernel2.Status, retries uint32) error
 
 	// Update 修改
-	Update(id uint64, status Status, runtime time.Time) error
+	Update(id uint64, status kernel2.Status, runtime time.Time) error
 
 	// Next 更新下次执行
 	Next(id uint64) error

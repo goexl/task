@@ -3,7 +3,7 @@ package builder
 import (
 	"github.com/goexl/log"
 	"github.com/goexl/task/internal/core"
-	core2 "github.com/goexl/task/internal/kernel"
+	core2 "github.com/goexl/task/internal/internal/kernel"
 	"github.com/goexl/task/internal/param"
 )
 
