@@ -10,9 +10,9 @@ type Agent struct {
 	params *param.Agent
 }
 
-func NewAgent(tasker core.Tasker) *Agent {
+func NewAgent() *Agent {
 	return &Agent{
-		params: param.NewAgent(tasker),
+		params: param.NewAgent(),
 	}
 }
 

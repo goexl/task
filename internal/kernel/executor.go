@@ -1,4 +1,4 @@
-package core
+package kernel
 
 type Executor interface {
 	// Execute 执行任务

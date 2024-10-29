@@ -9,8 +9,8 @@ import (
 )
 
 type Agent struct {
-	params    *param.Agent
-	processor *core.Processor
+	params *param.Agent
+	tasker kernel.Tasker
 }
 
 func NewAgent(params *param.Agent) *Agent {
@@ -19,22 +19,25 @@ func NewAgent(params *param.Agent) *Agent {
 	}
 }
 
-func (a *Agent) Start(ctx context.Context, selector kernel.Selector) (err error) {
-	if err = a.params.Tasker.Start(ctx); nil == err {
-		go a.processor.Process(selector)
+func (a *Agent) Start(ctx context.Context, tasker kernel.Tasker, selector kernel.Selector) (err error) {
+	if err = tasker.Start(ctx); nil == err {
+		a.tasker = tasker
+
+		processor := core.NewProcessor(tasker, a.params)
+		go processor.Process(selector)
 	}
 
 	return
 }
 
-func (a *Agent) Add(scheduling core.Schedule) error {
-	return a.params.Tasker.Add(scheduling)
+func (a *Agent) Add(schedule kernel.Schedule) error {
+	return a.tasker.Add(schedule)
 }
 
-func (a *Agent) Remove(scheduling core.Schedule) error {
-	return a.params.Tasker.Remove(scheduling)
+func (a *Agent) Remove(schedule kernel.Schedule) error {
+	return a.tasker.Remove(schedule)
 }
 
 func (a *Agent) Stop(ctx context.Context) error {
-	return a.params.Tasker.Stop(ctx)
+	return a.tasker.Stop(ctx)
 }

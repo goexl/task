@@ -1,9 +1,7 @@
-package core
+package kernel
 
 import (
 	"time"
-
-	"github.com/goexl/task/internal/kernel"
 )
 
 type Schedule interface {
@@ -17,10 +15,10 @@ type Schedule interface {
 	Elapsed() time.Duration
 
 	// Type 类型
-	Type() kernel.Type
+	Type() Type
 
 	// Subtype 子类型
-	Subtype() kernel.Type
+	Subtype() Type
 
 	// Data 数据
 	Data() map[string]any

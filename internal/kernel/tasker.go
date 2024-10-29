@@ -3,8 +3,6 @@ package kernel
 import (
 	"context"
 	"time"
-
-	"github.com/goexl/task/internal/internal/core"
 )
 
 type Tasker interface {
@@ -12,10 +10,10 @@ type Tasker interface {
 	Start(ctx context.Context) error
 
 	// Add 添加
-	Add(scheduling core.Schedule) error
+	Add(scheduling Schedule) error
 
 	// Remove 删除
-	Remove(scheduling core.Schedule) error
+	Remove(scheduling Schedule) error
 
 	// Running 运行中
 	Running(id uint64, status Status, retries uint32) error
@@ -27,7 +25,7 @@ type Tasker interface {
 	Next(id uint64) error
 
 	// Pop 取出任务并执行
-	Pop(times uint32) (core.Task, bool)
+	Pop(times uint32) (Task, bool)
 
 	// Stop 停止
 	Stop(ctx context.Context) error

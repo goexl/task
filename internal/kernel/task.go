@@ -1,4 +1,4 @@
-package core
+package kernel
 
 type Task interface {
 	Schedule

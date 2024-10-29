@@ -8,6 +8,6 @@ import (
 // Agent 任务执行器
 type Agent = core.Agent
 
-func New(tasker core.Tasker) *builder.Agent {
-	return builder.NewAgent(tasker)
+func New() *builder.Agent {
+	return builder.NewAgent()
 }
