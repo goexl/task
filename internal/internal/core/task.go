@@ -1,7 +1,7 @@
 package core
 
-type Tasking interface {
-	Scheduling
+type Task interface {
+	Schedule
 
 	// Retries 重试次数
 	Retries() uint32

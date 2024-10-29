@@ -8,6 +8,6 @@ import (
 )
 
 func TestScheduling(t *testing.T) {
-	scheduling := task.NewScheduling(1, 1).Build()
+	scheduling := task.NewSchedule(1, 1).Build()
 	require.Equal(t, scheduling.Target(), uint64(1), "计划标识设置出错")
 }

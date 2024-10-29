@@ -9,31 +9,31 @@ import (
 	"github.com/goexl/task/internal/kernel"
 )
 
-type Scheduling struct {
-	params *param.Scheduling
+type Schedule struct {
+	params *param.Schedule
 }
 
-func NewScheduling(target uint64, subtype kernel.Type) *Scheduling {
-	return &Scheduling{
-		params: param.NewScheduling(target, subtype),
+func NewSchedule(target uint64, subtype kernel.Type) *Schedule {
+	return &Schedule{
+		params: param.NewSchedule(target, subtype),
 	}
 }
 
-func (s *Scheduling) Id(id uint64) (scheduling *Scheduling) {
+func (s *Schedule) Id(id uint64) (scheduling *Schedule) {
 	s.params.Id = id
 	scheduling = s
 
 	return
 }
 
-func (s *Scheduling) Removable() (scheduling *Scheduling) {
-	s.params.Removable = true
+func (s *Schedule) Removable() (scheduling *Schedule) {
+	s.params.Data[constant.FieldRemovable] = true
 	scheduling = s
 
 	return
 }
 
-func (s *Scheduling) Cron(expression string) (scheduling *Scheduling) {
+func (s *Schedule) Cron(expression string) (scheduling *Schedule) {
 	s.params.Type = kernel.TypeCron
 	s.params.Data[constant.FieldCron] = expression
 	scheduling = s
@@ -41,7 +41,7 @@ func (s *Scheduling) Cron(expression string) (scheduling *Scheduling) {
 	return
 }
 
-func (s *Scheduling) Fixed(runtime time.Time) (scheduling *Scheduling) {
+func (s *Schedule) Fixed(runtime time.Time) (scheduling *Schedule) {
 	s.params.Type = kernel.TypeFixed
 	s.params.Data[constant.FieldRuntime] = runtime
 	scheduling = s
@@ -49,7 +49,7 @@ func (s *Scheduling) Fixed(runtime time.Time) (scheduling *Scheduling) {
 	return
 }
 
-func (s *Scheduling) Rate(duration time.Duration) (scheduling *Scheduling) {
+func (s *Schedule) Rate(duration time.Duration) (scheduling *Schedule) {
 	s.params.Type = kernel.TypeRate
 	s.params.Data[constant.FieldRate] = duration
 	scheduling = s
@@ -57,27 +57,27 @@ func (s *Scheduling) Rate(duration time.Duration) (scheduling *Scheduling) {
 	return
 }
 
-func (s *Scheduling) Computable() (scheduling *Scheduling) {
+func (s *Schedule) Computable() (scheduling *Schedule) {
 	s.params.Type = kernel.TypeComputable
 	scheduling = s
 
 	return
 }
 
-func (s *Scheduling) Once() (scheduling *Scheduling) {
+func (s *Schedule) Once() (scheduling *Schedule) {
 	s.params.Type = kernel.TypeOnce
 	scheduling = s
 
 	return
 }
 
-func (s *Scheduling) Data(data any) (scheduling *Scheduling) {
+func (s *Schedule) Data(data any) (scheduling *Schedule) {
 	s.params.Data[constant.FieldData] = data
 	scheduling = s
 
 	return
 }
 
-func (s *Scheduling) Build() *internal.Scheduling {
-	return internal.NewScheduling(s.params)
+func (s *Schedule) Build() *internal.Schedule {
+	return internal.NewSchedule(s.params)
 }

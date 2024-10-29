@@ -3,7 +3,6 @@ package builder
 import (
 	"github.com/goexl/log"
 	"github.com/goexl/task/internal/core"
-	core2 "github.com/goexl/task/internal/internal/kernel"
 	"github.com/goexl/task/internal/param"
 )
 
@@ -11,7 +10,7 @@ type Agent struct {
 	params *param.Agent
 }
 
-func NewAgent(tasker core2.Tasker) *Agent {
+func NewAgent(tasker core.Tasker) *Agent {
 	return &Agent{
 		params: param.NewAgent(tasker),
 	}

@@ -6,9 +6,9 @@ import (
 	"github.com/goexl/task/internal/kernel"
 )
 
-// Scheduling 计划
-type Scheduling = core.Scheduling
+// Schedule 计划
+type Schedule = core.Schedule
 
-func NewScheduling(target uint64, subtype kernel.Type) *builder.Scheduling {
-	return builder.NewScheduling(target, subtype)
+func NewSchedule(target uint64, subtype kernel.Type) *builder.Schedule {
+	return builder.NewSchedule(target, subtype)
 }

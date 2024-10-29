@@ -4,4 +4,4 @@ import (
 	"github.com/goexl/task/internal/internal/core"
 )
 
-type Scheduling = core.Scheduling
+type Task = core.Task
