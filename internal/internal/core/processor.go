@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/goexl/gox"
-	"github.com/goexl/task"
 	"github.com/goexl/task/internal/internal/constant"
 	"github.com/goexl/task/internal/kernel"
 	"github.com/goexl/task/internal/param"
@@ -32,25 +31,25 @@ func (p *Processor) Process(selector kernel.Selector) {
 		}
 
 		for _, _task := range tasks {
-			go p.process(_task, selector)
+			go func() {
+				_ = p.process(_task, selector) // 错误已经处理，纯接收
+			}()
 		}
 	}
 }
 
-func (p *Processor) process(_task kernel.Task, selector kernel.Selector) {
+func (p *Processor) process(task kernel.Task, selector kernel.Selector) (err error) {
 	ctx := NewContext(context.Background())
-	var err error
 	defer func() {
-		err = p.cleanup(_task, &executor, &err)
+		err = p.cleanup(ctx, task, &err)
 	}()
 
-	if re := p.updateRunning(_task); nil != re {
+	if re := p.updateRunning(task); nil != re {
 		err = re
-	} else if selected, pe := selector.Select(_task); nil != pe {
+	} else if executor, pe := selector.Select(task); nil != pe {
 		err = pe
 	} else {
-		executor = selected
-		err = executor.Execute(ctx, _task.Target(), _task.Retries())
+		err = executor.Execute(ctx, task.Target(), task.Retries())
 	}
 
 	return
@@ -58,7 +57,7 @@ func (p *Processor) process(_task kernel.Task, selector kernel.Selector) {
 
 func (p *Processor) cleanup(ctx *Context, task kernel.Task, result *error) (err error) {
 	if nil == *result { // 执行成功
-		err = p.success(task, executor)
+		err = p.success(ctx, task)
 	} else if task.Retries() >= p.params.Retries {
 		err = p.maxRetry(task)
 	} else { // 执行失败
@@ -79,7 +78,7 @@ func (p *Processor) updateRunning(tasking kernel.Task) (err error) {
 	return
 }
 
-func (p *Processor) success(ctx *Context, task kernel.Task, executor *task.Executor) (err error) {
+func (p *Processor) success(ctx *Context, task kernel.Task) (err error) {
 	if p.removable(task) { // 是否删除任务本身
 		err = p.tasker.Remove(task)
 	} else if kernel.TypeComputable == task.Type() { // 计算任务，将下一次执行时间交给处理器自身
