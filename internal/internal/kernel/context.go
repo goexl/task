@@ -17,6 +17,6 @@ func NewContext(ctx context.Context) *Context {
 	}
 }
 
-func (c *Context) Next(runtime time.Time) {
+func (c *Context) Runtime(runtime time.Time) {
 	c.Context = context.WithValue(c.Context, constant.KeyRuntime, runtime)
 }
