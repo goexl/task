@@ -6,6 +6,7 @@ import (
 
 	"github.com/goexl/gox"
 	"github.com/goexl/task/internal/internal/constant"
+	kernel2 "github.com/goexl/task/internal/internal/kernel"
 	"github.com/goexl/task/internal/kernel"
 	"github.com/goexl/task/internal/param"
 )
@@ -39,7 +40,7 @@ func (p *Processor) Process(selector kernel.Selector) {
 }
 
 func (p *Processor) process(task kernel.Task, selector kernel.Selector) (err error) {
-	ctx := NewContext(context.Background())
+	ctx := kernel2.NewContext(context.Background())
 	defer func() {
 		err = p.cleanup(ctx, task, &err)
 	}()
@@ -55,7 +56,7 @@ func (p *Processor) process(task kernel.Task, selector kernel.Selector) (err err
 	return
 }
 
-func (p *Processor) cleanup(ctx *Context, task kernel.Task, result *error) (err error) {
+func (p *Processor) cleanup(ctx *kernel2.Context, task kernel.Task, result *error) (err error) {
 	if nil == *result { // 执行成功
 		err = p.success(ctx, task)
 	} else if task.Retries() >= p.params.Retries {
@@ -78,7 +79,7 @@ func (p *Processor) updateRunning(tasking kernel.Task) (err error) {
 	return
 }
 
-func (p *Processor) success(ctx *Context, task kernel.Task) (err error) {
+func (p *Processor) success(ctx *kernel2.Context, task kernel.Task) (err error) {
 	if p.removable(task) { // 是否删除任务本身
 		err = p.tasker.Remove(task)
 	} else if kernel.TypeComputable == task.Type() { // 计算任务，将下一次执行时间交给处理器自身
