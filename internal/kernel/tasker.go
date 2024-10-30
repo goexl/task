@@ -21,9 +21,6 @@ type Tasker interface {
 	// Update 修改
 	Update(id uint64, status Status, runtime time.Time) error
 
-	// Next 更新下次执行
-	Next(id uint64) error
-
 	// Pop 取出任务并执行
 	Pop(times uint32) ([]Task, bool)
 

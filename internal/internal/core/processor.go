@@ -1,9 +1,11 @@
 package core
 
 import (
+	"context"
 	"time"
 
 	"github.com/goexl/gox"
+	"github.com/goexl/task"
 	"github.com/goexl/task/internal/internal/constant"
 	"github.com/goexl/task/internal/kernel"
 	"github.com/goexl/task/internal/param"
@@ -29,38 +31,40 @@ func (p *Processor) Process(selector kernel.Selector) {
 			continue
 		}
 
-		for _, task := range tasks {
-			go p.process(task, selector)
+		for _, _task := range tasks {
+			go p.process(_task, selector)
 		}
 	}
 }
 
-func (p *Processor) process(tasking kernel.Task, selector kernel.Selector) {
+func (p *Processor) process(_task kernel.Task, selector kernel.Selector) {
+	ctx := NewContext(context.Background())
 	var err error
 	defer func() {
-		err = p.cleanup(tasking, &err)
+		err = p.cleanup(_task, &executor, &err)
 	}()
 
-	if re := p.updateRunning(tasking); nil != re {
+	if re := p.updateRunning(_task); nil != re {
 		err = re
-	} else if executor, pe := selector.Select(tasking); nil != pe {
+	} else if selected, pe := selector.Select(_task); nil != pe {
 		err = pe
 	} else {
-		err = executor.Execute(tasking.Target(), tasking.Retries())
+		executor = selected
+		err = executor.Execute(ctx, _task.Target(), _task.Retries())
 	}
 
 	return
 }
 
-func (p *Processor) cleanup(tasking kernel.Task, result *error) (err error) {
+func (p *Processor) cleanup(ctx *Context, task kernel.Task, result *error) (err error) {
 	if nil == *result { // 执行成功
-		err = p.success(tasking)
-	} else if tasking.Retries() >= p.params.Retries {
-		err = p.maxRetry(tasking)
+		err = p.success(task, executor)
+	} else if task.Retries() >= p.params.Retries {
+		err = p.maxRetry(task)
 	} else { // 执行失败
 		// 确定下一次重试的时间，计算规则是，以二的幂为基数重试
-		runtime := time.Now().Add(15 * time.Second * 2 << tasking.Retries())
-		err = p.tasker.Update(tasking.Id(), kernel.StatusFailed, runtime)
+		runtime := time.Now().Add(15 * time.Second * 2 << task.Retries())
+		err = p.tasker.Update(task.Id(), kernel.StatusFailed, runtime)
 	}
 
 	return
@@ -75,11 +79,11 @@ func (p *Processor) updateRunning(tasking kernel.Task) (err error) {
 	return
 }
 
-func (p *Processor) success(task kernel.Task) (err error) {
+func (p *Processor) success(ctx *Context, task kernel.Task, executor *task.Executor) (err error) {
 	if p.removable(task) { // 是否删除任务本身
 		err = p.tasker.Remove(task)
 	} else if kernel.TypeComputable == task.Type() { // 计算任务，将下一次执行时间交给处理器自身
-		err = p.tasker.Next(task.Id())
+		err = p.tasker.Update(task.Id(), kernel.StatusSuccess, ctx.Value(constant.KeyRuntime).(time.Time))
 	} else {
 		err = p.tasker.Update(task.Id(), kernel.StatusSuccess, task.Next())
 	}
