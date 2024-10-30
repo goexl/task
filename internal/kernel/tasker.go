@@ -25,7 +25,7 @@ type Tasker interface {
 	Next(id uint64) error
 
 	// Pop 取出任务并执行
-	Pop(times uint32) (Task, bool)
+	Pop(times uint32) ([]Task, bool)
 
 	// Stop 停止
 	Stop(ctx context.Context) error

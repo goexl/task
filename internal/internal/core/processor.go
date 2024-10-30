@@ -23,13 +23,15 @@ func NewProcessor(tasker kernel.Tasker, params *param.Agent) *Processor {
 
 func (p *Processor) Process(selector kernel.Selector) {
 	for {
-		tasking, exists := p.tasker.Pop(p.params.Retries)
+		tasks, exists := p.tasker.Pop(p.params.Retries)
 		if !exists { // 让出时间切片
 			time.Sleep(0)
 			continue
 		}
 
-		p.process(tasking, selector)
+		for _, task := range tasks {
+			go p.process(task, selector)
+		}
 	}
 }
 

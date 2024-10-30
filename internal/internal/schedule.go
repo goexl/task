@@ -41,6 +41,8 @@ func (s *Schedule) Next() (next time.Time) {
 	switch s.Type() {
 	case kernel.TypeCron:
 		next = s.nextCron()
+	case kernel.TypeFixed:
+		next = s.Data()[constant.FieldRuntime].(time.Time)
 	case kernel.TypeRate:
 		next = time.Now().Add(s.Data()[constant.FieldRate].(time.Duration))
 	default:
