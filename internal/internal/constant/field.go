@@ -1,10 +1,9 @@
 package constant
 
 const (
-	FieldCron      = "cron"
-	FieldRuntime   = "runtime"
-	FieldRate      = "rate"
-	FieldRemovable = "removable"
+	FieldCron    = "cron"
+	FieldRuntime = "runtime"
+	FieldRate    = "rate"
 
 	FieldData = "data"
 )

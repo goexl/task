@@ -26,13 +26,6 @@ func (s *Schedule) Id(id uint64) (scheduling *Schedule) {
 	return
 }
 
-func (s *Schedule) Removable() (scheduling *Schedule) {
-	s.params.Data[constant.FieldRemovable] = true
-	scheduling = s
-
-	return
-}
-
 func (s *Schedule) Cron(expression string) (scheduling *Schedule) {
 	s.params.Type = kernel.TypeCron
 	s.params.Data[constant.FieldCron] = expression
