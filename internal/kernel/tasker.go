@@ -27,8 +27,8 @@ type Tasker interface {
 	// Archive 存档
 	Archive(task Task) error
 
-	// Faield 执行错误
-	Faield(task Task) error
+	// Failed 执行错误
+	Failed(task Task) error
 
 	// Stop 停止
 	Stop(ctx context.Context) error
