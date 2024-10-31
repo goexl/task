@@ -59,7 +59,7 @@ func (p *Processor) cleanup(ctx *kernel.Context, task kernel.Task, result *error
 	if nil == *result { // 执行成功
 		err = p.success(ctx, task)
 	} else if task.Retries() >= p.params.Retries {
-		err = p.tasker.Faield(task)
+		err = p.tasker.Failed(task)
 	} else { // 执行失败
 		// 确定下一次重试的时间，计算规则是，以二的幂为基数重试
 		runtime := time.Now().Add(15 * time.Second * 2 << task.Retries())
