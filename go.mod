@@ -3,7 +3,7 @@ module github.com/goexl/task
 go 1.23
 
 require (
-	github.com/goexl/gox v1.9.0
+	github.com/goexl/gox v1.9.1
 	github.com/goexl/log v0.0.7
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/stretchr/testify v1.9.0
