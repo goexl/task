@@ -10,7 +10,7 @@ type Tasker interface {
 	Start(ctx context.Context) error
 
 	// Add 添加
-	Add(schedule Schedule) error
+	Add(schedule Schedule, schedules ...Schedule) error
 
 	// Remove 删除
 	Remove(schedule Schedule) error

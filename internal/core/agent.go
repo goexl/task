@@ -30,8 +30,8 @@ func (a *Agent) Start(ctx context.Context, tasker kernel.Tasker, selector kernel
 	return
 }
 
-func (a *Agent) Add(schedule kernel.Schedule) error {
-	return a.tasker.Add(schedule)
+func (a *Agent) Add(schedule kernel.Schedule, schedules ...kernel.Schedule) error {
+	return a.tasker.Add(schedule, schedules...)
 }
 
 func (a *Agent) Remove(schedule kernel.Schedule) error {
