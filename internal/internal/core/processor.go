@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"github.com/goexl/gox"
@@ -13,12 +14,16 @@ import (
 type Processor struct {
 	tasker kernel.Tasker
 	params *param.Agent
+
+	progresses *sync.Map
 }
 
 func NewProcessor(tasker kernel.Tasker, params *param.Agent) *Processor {
 	return &Processor{
 		tasker: tasker,
 		params: params,
+
+		progresses: new(sync.Map),
 	}
 }
 
@@ -31,6 +36,10 @@ func (p *Processor) Process(selector kernel.Selector) {
 		}
 
 		for _, _task := range tasks {
+			if _, exists := p.progresses.Load(_task.Id()); exists {
+				continue
+			}
+
 			go func() {
 				_ = p.process(_task, selector) // 错误已经处理，纯接收
 			}()
@@ -39,6 +48,9 @@ func (p *Processor) Process(selector kernel.Selector) {
 }
 
 func (p *Processor) process(task kernel.Task, selector kernel.Selector) (err error) {
+	// 放入处理缓存
+	p.progresses.Store(task.Id(), new(gox.Empty))
+
 	ctx := kernel.NewContext(context.Background())
 	defer func() {
 		err = p.cleanup(ctx, task, &err)
@@ -56,6 +68,9 @@ func (p *Processor) process(task kernel.Task, selector kernel.Selector) (err err
 }
 
 func (p *Processor) cleanup(ctx *kernel.Context, task kernel.Task, result *error) (err error) {
+	// 从处理队列移除
+	p.progresses.Delete(task.Id())
+
 	if nil == *result { // 执行成功
 		err = p.success(ctx, task)
 	} else if task.Retries() >= p.params.Retries {
