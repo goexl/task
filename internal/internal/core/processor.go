@@ -29,17 +29,10 @@ func NewProcessor(tasker kernel.Tasker, params *param.Agent) *Processor {
 
 func (p *Processor) Process(selector kernel.Selector) {
 	for {
-		tasks := p.tasker.Pop(p.params.Retries)
-		if 0 == len(tasks) { // 让出时间切片
-			time.Sleep(0)
-			continue
-		}
-
-		for _, _task := range tasks {
-			if _, exists := p.progresses.Load(_task.Id()); exists {
-				continue
-			}
-
+		_task := p.tasker.Pop(p.params.Retries)
+		if _, exists := p.progresses.Load(_task.Id()); exists {
+			time.Sleep(0) // 让出时间片
+		} else {
 			go func() {
 				_ = p.process(_task, selector) // 错误已经处理，纯接收
 			}()

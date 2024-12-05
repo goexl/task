@@ -22,7 +22,7 @@ type Tasker interface {
 	Update(id uint64, status Status, runtime time.Time) error
 
 	// Pop 取出任务并执行
-	Pop(retries uint32) []Task
+	Pop(retries uint32) Task
 
 	// Archive 存档
 	Archive(task Task) error
