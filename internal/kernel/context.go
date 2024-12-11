@@ -20,3 +20,7 @@ func NewContext(ctx context.Context) *Context {
 func (c *Context) Runtime(runtime time.Time) {
 	c.Context = context.WithValue(c.Context, constant.KeyRuntime, runtime)
 }
+
+func (c *Context) Put(key any, value any) {
+	c.Context = context.WithValue(c.Context, key, value)
+}
