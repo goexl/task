@@ -11,14 +11,17 @@ type Schedule interface {
 	// Target 目标
 	Target() uint64
 
-	// Elapsed 预计消耗时间
-	Elapsed() time.Duration
+	// Timeout 任务超时时间
+	Timeout() time.Duration
 
 	// Type 类型
 	Type() Type
 
 	// Subtype 子类型
 	Subtype() Type
+
+	// Maximum 最大重试次数
+	Maximum() uint32
 
 	// Data 数据
 	Data() map[string]any

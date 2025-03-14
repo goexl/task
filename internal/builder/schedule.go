@@ -64,6 +64,13 @@ func (s *Schedule) Once() (scheduling *Schedule) {
 	return
 }
 
+func (s *Schedule) Maximum(maximum uint32) (scheduling *Schedule) {
+	s.params.Maximum = maximum
+	scheduling = s
+
+	return
+}
+
 func (s *Schedule) Data(data any) (scheduling *Schedule) {
 	s.params.Data[constant.FieldData] = data
 	scheduling = s

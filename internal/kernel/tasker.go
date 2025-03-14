@@ -16,13 +16,13 @@ type Tasker interface {
 	Remove(schedule Schedule) error
 
 	// Running 运行中
-	Running(id uint64, status Status, retries uint32) error
+	Running(id uint64, status Status, times uint32) error
 
 	// Update 修改
 	Update(id uint64, status Status, runtime time.Time) error
 
 	// Pop 取出任务并执行
-	Pop(retries uint32) Task
+	Pop() Task
 
 	// Archive 存档
 	Archive(task Task) error

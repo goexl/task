@@ -52,8 +52,12 @@ func (s *Schedule) Next() (next time.Time) {
 	return
 }
 
-func (s *Schedule) Elapsed() time.Duration {
-	return s.params.Elapsed
+func (s *Schedule) Timeout() time.Duration {
+	return s.params.Timeout
+}
+
+func (s *Schedule) Maximum() uint32 {
+	return s.params.Maximum
 }
 
 func (s *Schedule) Data() map[string]any {

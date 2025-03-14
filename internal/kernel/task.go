@@ -3,6 +3,6 @@ package kernel
 type Task interface {
 	Schedule
 
-	// Retries 重试次数
-	Retries() uint32
+	// Times 当然运行次数
+	Times() uint32
 }

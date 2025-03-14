@@ -23,13 +23,6 @@ func (a *Agent) Logger(logger log.Logger) (agent *Agent) {
 	return
 }
 
-func (a *Agent) Retries(times uint32) (agent *Agent) {
-	a.params.Retries = times
-	agent = a
-
-	return
-}
-
 func (a *Agent) Build() *core.Agent {
 	return core.NewAgent(a.params)
 }
