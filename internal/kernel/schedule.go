@@ -2,14 +2,16 @@ package kernel
 
 import (
 	"time"
+
+	"github.com/goexl/id"
 )
 
 type Schedule interface {
 	// Id 任务标识，如果不提供将自动生成
-	Id() uint64
+	Id() id.Value
 
 	// Target 目标
-	Target() uint64
+	Target() id.Value
 
 	// Timeout 任务超时时间
 	Timeout() time.Duration
