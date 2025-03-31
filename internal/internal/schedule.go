@@ -3,7 +3,6 @@ package internal
 import (
 	"time"
 
-	"github.com/goexl/id"
 	"github.com/goexl/task/internal/internal/constant"
 	"github.com/goexl/task/internal/internal/param"
 	"github.com/goexl/task/internal/kernel"
@@ -22,11 +21,11 @@ func NewSchedule(params *param.Schedule) *Schedule {
 	}
 }
 
-func (s *Schedule) Id() id.Value {
+func (s *Schedule) Id() uint64 {
 	return s.params.Id
 }
 
-func (s *Schedule) Target() id.Value {
+func (s *Schedule) Target() uint64 {
 	return s.params.Target
 }
 

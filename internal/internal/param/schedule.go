@@ -3,13 +3,12 @@ package param
 import (
 	"time"
 
-	"github.com/goexl/id"
 	"github.com/goexl/task/internal/kernel"
 )
 
 type Schedule struct {
-	Id      id.Value
-	Target  id.Value
+	Id      uint64
+	Target  uint64
 	Type    kernel.Type
 	Subtype kernel.Type
 	Timeout time.Duration
@@ -17,7 +16,7 @@ type Schedule struct {
 	Data    map[string]any
 }
 
-func NewSchedule(target id.Value, subtype kernel.Type) *Schedule {
+func NewSchedule(target uint64, subtype kernel.Type) *Schedule {
 	return &Schedule{
 		Target:  target,
 		Subtype: subtype,

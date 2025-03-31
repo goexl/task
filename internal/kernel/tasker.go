@@ -3,8 +3,6 @@ package kernel
 import (
 	"context"
 	"time"
-
-	"github.com/goexl/id"
 )
 
 type Tasker interface {
@@ -18,10 +16,10 @@ type Tasker interface {
 	Remove(schedule Schedule) error
 
 	// Running 运行中
-	Running(id id.Value, status Status, times uint32) error
+	Running(id uint64, status Status, times uint32) error
 
 	// Update 修改
-	Update(id id.Value, status Status, runtime time.Time) error
+	Update(id uint64, status Status, runtime time.Time) error
 
 	// Pop 取出任务并执行
 	Pop() Task

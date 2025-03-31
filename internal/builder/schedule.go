@@ -3,7 +3,6 @@ package builder
 import (
 	"time"
 
-	"github.com/goexl/id"
 	"github.com/goexl/task/internal/internal"
 	"github.com/goexl/task/internal/internal/constant"
 	"github.com/goexl/task/internal/internal/param"
@@ -14,13 +13,13 @@ type Schedule struct {
 	params *param.Schedule
 }
 
-func NewSchedule(target id.Value, subtype kernel.Type) *Schedule {
+func NewSchedule(target uint64, subtype kernel.Type) *Schedule {
 	return &Schedule{
 		params: param.NewSchedule(target, subtype),
 	}
 }
 
-func (s *Schedule) Id(id id.Value) (scheduling *Schedule) {
+func (s *Schedule) Id(id uint64) (scheduling *Schedule) {
 	s.params.Id = id
 	scheduling = s
 
