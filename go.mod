@@ -7,7 +7,7 @@ require (
 	github.com/goexl/log v0.1.0
 	github.com/goexl/snowflake v0.0.9
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 )
 
 require (
