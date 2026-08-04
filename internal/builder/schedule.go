@@ -64,7 +64,7 @@ func (s *Schedule) Once() (scheduling *Schedule) {
 	return
 }
 
-func (s *Schedule) Maximum(maximum uint32) (scheduling *Schedule) {
+func (s *Schedule) Maximum(maximum uint64) (scheduling *Schedule) {
 	s.params.Maximum = maximum
 	scheduling = s
 

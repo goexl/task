@@ -16,7 +16,7 @@ type Tasker interface {
 	Remove(schedule Schedule) error
 
 	// Running 运行中
-	Running(id uint64, status Status, times uint32) error
+	Running(id uint64, status Status, times uint64) error
 
 	// Update 修改
 	Update(id uint64, status Status, runtime time.Time) error

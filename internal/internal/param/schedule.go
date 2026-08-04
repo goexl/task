@@ -12,7 +12,7 @@ type Schedule struct {
 	Type    kernel.Type
 	Subtype kernel.Type
 	Timeout time.Duration
-	Maximum uint32
+	Maximum uint64
 	Data    map[string]any
 }
 
@@ -20,8 +20,6 @@ func NewSchedule(target uint64, subtype kernel.Type) *Schedule {
 	return &Schedule{
 		Target:  target,
 		Subtype: subtype,
-		Timeout: 24 * time.Hour,
-		Maximum: 10,
 		Data:    make(map[string]any),
 	}
 }

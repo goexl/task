@@ -21,7 +21,7 @@ type Runtime interface {
 	Subtype() Type
 
 	// Maximum 最大重试次数
-	Maximum() uint32
+	Maximum() uint64
 
 	// Next 下一个可被执行的时间
 	Next() time.Time

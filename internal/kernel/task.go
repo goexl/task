@@ -7,5 +7,5 @@ type Task interface {
 	Data() any
 
 	// Times 当然运行次数
-	Times() uint32
+	Times() uint64
 }

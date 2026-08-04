@@ -56,7 +56,7 @@ func (s *Schedule) Timeout() time.Duration {
 	return s.params.Timeout
 }
 
-func (s *Schedule) Maximum() uint32 {
+func (s *Schedule) Maximum() uint64 {
 	return s.params.Maximum
 }
 
