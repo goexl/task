@@ -70,7 +70,7 @@ func (p *Processor) cleanup(task kernel.Task, executor *kernel.Executor, result 
 
 	if nil == *result { // 执行成功
 		err = p.success(task)
-	} else if task.Times() >= task.Maximum() {
+	} else if maximum := task.Maximum(); 0 != maximum && task.Times() >= maximum {
 		err = p.tasker.Failed(task)
 	} else { // 执行失败
 		err = p.tasker.Update(task.Id(), kernel.StatusFailed, p.nextTime(task, executor))
