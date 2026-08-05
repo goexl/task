@@ -5,5 +5,5 @@ import (
 )
 
 type NextTimer interface {
-	Next(Task) time.Time
+	Next(Task) *time.Time
 }

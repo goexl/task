@@ -12,11 +12,13 @@ const (
 	// StatusRetrying 重试中
 	StatusRetrying = kernel.StatusRetrying
 
-	// StatusFailed 失败
-	StatusFailed = kernel.StatusFailed
-
 	// StatusSuccess 成功
 	StatusSuccess = kernel.StatusSuccess
+	// StatusStandby 待命
+	StatusStandby = kernel.StatusStandby
+
+	// StatusFailed 失败
+	StatusFailed = kernel.StatusFailed
 )
 
 // Status 类型

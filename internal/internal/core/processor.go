@@ -5,7 +5,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/goexl/exception"
 	"github.com/goexl/gox"
+	"github.com/goexl/gox/field"
 	"github.com/goexl/gox/rand"
 	"github.com/goexl/task/internal/kernel"
 	"github.com/goexl/task/internal/param"
@@ -69,7 +71,7 @@ func (p *Processor) cleanup(task kernel.Task, executor *kernel.Executor, result 
 	p.progresses.Delete(task.Id())
 
 	if nil == *result { // 执行成功
-		err = p.success(task)
+		err = p.success(task, executor)
 	} else if maximum := task.Maximum(); 0 != maximum && task.Times() >= maximum {
 		err = p.tasker.Failed(task)
 	} else { // 执行失败
@@ -90,7 +92,7 @@ func (p *Processor) updateRunning(task kernel.Task) (err error) {
 
 func (p *Processor) nextTime(task kernel.Task, executor *kernel.Executor) (runtime time.Time) {
 	if kernel.TypeComputable == task.Type() { // 计算任务，将下一次执行时间交给处理器自身
-		runtime = (*executor).(kernel.NextTimer).Next(task)
+		runtime = *(*executor).(kernel.NextTimer).Next(task)
 	} else {
 		p.calNextTime(task)
 	}
@@ -112,6 +114,21 @@ func (p *Processor) calNextTime(task kernel.Task) (runtime time.Time) {
 	return
 }
 
-func (p *Processor) success(task kernel.Task) error {
-	return p.tasker.Archive(task)
+func (p *Processor) success(task kernel.Task, executor *kernel.Executor) (err error) {
+	switch task.Type() {
+	case kernel.TypeCron, kernel.TypeRate:
+		err = p.tasker.Update(task.Id(), kernel.StatusStandby, task.Next())
+	case kernel.TypeComputable:
+		if next := (*executor).(kernel.NextTimer).Next(task); next != nil {
+			err = p.tasker.Update(task.Id(), kernel.StatusStandby, p.nextTime(task, executor))
+		} else {
+			err = p.tasker.Archive(task)
+		}
+	case kernel.TypeUnknown:
+		err = exception.New().Message("没有匹配的类型").Field(field.New("type", "unknown")).Build()
+	default:
+		err = p.tasker.Archive(task)
+	}
+
+	return
 }
