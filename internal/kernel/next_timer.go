@@ -5,5 +5,5 @@ import (
 )
 
 type NextTimer interface {
-	Next(error, Task) *time.Time
+	Next(*Context, error, Task) *time.Time
 }

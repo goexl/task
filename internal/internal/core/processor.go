@@ -51,7 +51,7 @@ func (p *Processor) process(task kernel.Task, selector kernel.Selector) (err err
 	ctx := kernel.NewContext(context.Background())
 	var executor *kernel.Executor
 	defer func() {
-		err = p.cleanup(task, executor, &err)
+		err = p.cleanup(ctx, task, executor, &err)
 	}()
 
 	if re := p.updateRunning(task); nil != re {
@@ -66,16 +66,18 @@ func (p *Processor) process(task kernel.Task, selector kernel.Selector) (err err
 	return
 }
 
-func (p *Processor) cleanup(task kernel.Task, executor *kernel.Executor, result *error) (err error) {
+func (p *Processor) cleanup(
+	ctx *kernel.Context, task kernel.Task, executor *kernel.Executor, result *error,
+) (err error) {
 	// 从处理队列移除
 	p.progresses.Delete(task.Id())
 
 	if nil == *result { // 执行成功
-		err = p.success(result, task, executor)
+		err = p.success(ctx, result, task, executor)
 	} else if maximum := task.Maximum(); 0 != maximum && task.Times() >= maximum {
 		err = p.tasker.Failed(task)
 	} else { // 执行失败
-		err = p.tasker.Update(task.Id(), kernel.StatusFailed, p.nextTime(result, task, executor))
+		err = p.tasker.Update(task.Id(), kernel.StatusFailed, p.nextTime(ctx, result, task, executor))
 	}
 
 	return
@@ -90,9 +92,11 @@ func (p *Processor) updateRunning(task kernel.Task) (err error) {
 	return
 }
 
-func (p *Processor) nextTime(err *error, task kernel.Task, executor *kernel.Executor) (runtime time.Time) {
+func (p *Processor) nextTime(
+	ctx *kernel.Context, err *error, task kernel.Task, executor *kernel.Executor,
+) (runtime time.Time) {
 	if kernel.TypeComputable == task.Type() { // 计算任务，将下一次执行时间交给处理器自身
-		runtime = *(*executor).(kernel.NextTimer).Next(*err, task)
+		runtime = *(*executor).(kernel.NextTimer).Next(ctx, *err, task)
 	} else {
 		p.calNextTime(task)
 	}
@@ -114,13 +118,13 @@ func (p *Processor) calNextTime(task kernel.Task) (runtime time.Time) {
 	return
 }
 
-func (p *Processor) success(result *error, task kernel.Task, executor *kernel.Executor) (err error) {
+func (p *Processor) success(ctx *kernel.Context, result *error, task kernel.Task, executor *kernel.Executor) (err error) {
 	switch task.Type() {
 	case kernel.TypeCron, kernel.TypeRate:
 		err = p.tasker.Update(task.Id(), kernel.StatusStandby, task.Next())
 	case kernel.TypeComputable:
-		if next := (*executor).(kernel.NextTimer).Next(*result, task); next != nil {
-			err = p.tasker.Update(task.Id(), kernel.StatusStandby, p.nextTime(result, task, executor))
+		if next := (*executor).(kernel.NextTimer).Next(ctx, *result, task); next != nil {
+			err = p.tasker.Update(task.Id(), kernel.StatusStandby, p.nextTime(ctx, result, task, executor))
 		} else {
 			err = p.tasker.Archive(task)
 		}
