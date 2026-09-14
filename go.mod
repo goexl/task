@@ -1,10 +1,10 @@
 module github.com/goexl/task
 
-go 1.25
+go 1.27
 
 require (
 	github.com/goexl/exception v0.0.4
-	github.com/goexl/gox v1.9.2
+	github.com/goexl/gox v1.9.3
 	github.com/goexl/log v0.1.0
 	github.com/goexl/snowflake v0.1.2
 	github.com/robfig/cron/v3 v3.0.1
