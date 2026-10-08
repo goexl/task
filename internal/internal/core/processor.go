@@ -95,15 +95,26 @@ func (p *Processor) updateRunning(task kernel.Task) (err error) {
 func (p *Processor) nextTime(
 	ctx *kernel.Context, err *error, task kernel.Task, executor *kernel.Executor,
 ) (runtime time.Time) {
-	switch {
-	case kernel.TypeComputable == task.Type() && err == nil:
-		runtime = *(*executor).(kernel.NextTimer).Next(ctx, nil, task)
-	case kernel.TypeComputable == task.Type() && err != nil: // 计算任务，将下一次执行时间交给处理器自身
-		runtime = *(*executor).(kernel.NextTimer).Next(ctx, *err, task)
-	case executor == nil:
+	if executor == nil {
 		runtime = time.Now().Add(time.Second)
-	default:
+	} else if kernel.TypeComputable == task.Type() {
+		runtime = p.preNextTime(ctx, err, task, executor)
+	} else {
 		runtime = p.calNextTime(task)
+	}
+
+	return
+}
+
+func (p *Processor) preNextTime(
+	ctx *kernel.Context, err *error, task kernel.Task, executor *kernel.Executor,
+) (runtime time.Time) {
+	if timer := (*executor).(kernel.NextTimer); timer == nil {
+		runtime = time.Now().Add(time.Second)
+	} else if err == nil {
+		runtime = *timer.Next(ctx, nil, task)
+	} else {
+		runtime = *timer.Next(ctx, *err, task)
 	}
 
 	return
