@@ -10,6 +10,6 @@ import (
 
 func TestScheduling(t *testing.T) {
 	id := snowflake.New().Build().Parse(1)
-	scheduling := task.NewSchedule(id, 1).Build()
+	scheduling := task.NewSchedule(id.Get(), task.Type(1)).Build()
 	require.Equal(t, scheduling.Target(), id, "计划标识设置出错")
 }

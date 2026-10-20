@@ -71,6 +71,13 @@ func (s *Schedule) Maximum(maximum uint64) (scheduling *Schedule) {
 	return
 }
 
+func (s *Schedule) Timeout(timeout time.Duration) (scheduling *Schedule) {
+	s.params.Timeout = timeout
+	scheduling = s
+
+	return
+}
+
 func (s *Schedule) Data(data any) (scheduling *Schedule) {
 	s.params.Data[constant.FieldData] = data
 	scheduling = s
